@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import AppIcon from '../images/icon.png';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 //MUI Stuff
@@ -11,6 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+// Redux stuff
+import { useSelector, useDispatch } from 'react-redux';
+import { loginUser } from '../redux/actions/userActions';
 
 
 const styles = theme => ({
@@ -18,33 +20,28 @@ const styles = theme => ({
 });
 
 const Login = ({ classes, history }) => {
-  console.log(classes);
+
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.ui.loading);
+  const UIErrors = useSelector(state => state.ui.errors);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (UIErrors) setErrors(UIErrors);
+  }, [UIErrors]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     const userData = {
       email,
       password
     };
-    try {
-      const res = await axios.post('/login', userData);
-      console.log(res);
-      localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
-      setLoading(false);
-      history.push('/');
-    }
-    catch (err) {
-      console.log(err.response.data);
-      setErrors(err.response.data);
-      setLoading(false);
-    }
+
+    dispatch(loginUser(userData, history));
   };
 
   const handleChange = e => {
