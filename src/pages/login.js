@@ -30,7 +30,7 @@ const Login = ({ classes, history }) => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (UIErrors) setErrors(UIErrors);
+    UIErrors && setErrors(UIErrors);
   }, [UIErrors]);
 
   const handleSubmit = async (e) => {

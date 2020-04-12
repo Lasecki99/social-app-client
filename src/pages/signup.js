@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import AppIcon from '../images/icon.png';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 //MUI Stuff
@@ -11,7 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+//Redux Stuff
+import { useDispatch, useSelector } from 'react-redux';
+import { signupUser } from '../redux/actions/userActions';
 
 const styles = theme => ({
   ...theme.spreadThis
@@ -21,14 +22,20 @@ const Signup = ({ classes, history }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [confirmPassword, setConfirmPassword] = useState('');
   const [handle, setHandle] = useState('');
 
+  const dispatch = useDispatch();
+  const UIErrors = useSelector(state => state.ui.errors);
+  const loading = useSelector(state => state.ui.loading);
+
+  useEffect(() => {
+    UIErrors && setErrors(UIErrors);
+  }, [UIErrors]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     const newUserData = {
       email,
@@ -36,18 +43,7 @@ const Signup = ({ classes, history }) => {
       confirmPassword,
       handle
     };
-    try {
-      const res = await axios.post('/signup', newUserData);
-      console.log(res);
-      localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`);
-      setLoading(false);
-      history.push('/');
-    }
-    catch (err) {
-      console.log(err.response.data);
-      setErrors(err.response.data);
-      setLoading(false);
-    }
+    dispatch(signupUser(newUserData, history));
   };
 
   const handleChange = e => {
