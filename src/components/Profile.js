@@ -13,10 +13,9 @@ import LocationOn from '@material-ui/icons/LocationOn';
 import LinkIcon from '@material-ui/icons/Link';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-import Tooltip from '@material-ui/core/Tooltip';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
+import MyButton from '../util/MyButton';
 
 const styles = theme => ({
   paper: {
@@ -89,11 +88,9 @@ const Profile = ({ classes, uploadImage, logoutUser, user: { credentials: { hand
         <div className="image-wrapper">
           <img src={imageUrl} alt="profile" className='profile-image' />
           <input type='file' id='imageInput' hidden onChange={handleImageChange} />
-          <Tooltip title='Edit profile picture' placement='top'>
-            <IconButton onClick={handleEditPicture} className='button'>
-              <EditIcon color='primary' />
-            </IconButton>
-          </Tooltip>
+          <MyButton tip='Edit profile picture' onClick={handleEditPicture} btnClassName='button'>
+            <EditIcon color='primary' />
+          </MyButton>
         </div>
         <hr />
         <div className="profile-details">
@@ -121,11 +118,9 @@ const Profile = ({ classes, uploadImage, logoutUser, user: { credentials: { hand
           <CalendarToday color='primary' />{' '}
           <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
         </div>
-        <Tooltip title='Logout' placement='top'>
-          <IconButton onClick={handleLogout}>
-            <KeyboardReturn color='primary' />
-          </IconButton>
-        </Tooltip>
+        <MyButton tip='Logout' onClick={handleLogout}>
+          <KeyboardReturn color='primary' />
+        </MyButton>
         <EditDetails />
       </div>
     </Paper>
