@@ -1,4 +1,4 @@
-import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED } from '../types';
+import { SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SET_UNAUTHENTICATED, LOADING_USER } from '../types';
 import axios from 'axios';
 
 export const loginUser = (userData, history) => async dispatch => {
@@ -36,10 +36,35 @@ export const logoutUser = () => dispatch => {
 };
 
 export const getUserData = () => async dispatch => {
+  dispatch({ type: LOADING_USER });
   try {
     const res = await axios.get('/user');
     console.log(res);
     dispatch({ type: SET_USER, payload: res.data });
+  }
+  catch (err) {
+    console.log(err);
+  }
+};
+
+export const uploadImage = formData => async dispatch => {
+  console.log('dispatch');
+  dispatch({ type: LOADING_USER });
+  try {
+    await axios.post('/user/image', formData);
+    dispatch(getUserData());
+  }
+  catch (err) {
+    console.log(err);
+  }
+
+};
+
+export const editUserDetails = userDetails => async dispatch => {
+  dispatch({ type: LOADING_USER });
+  try {
+    await axios.post('/user', userDetails);
+    dispatch(getUserData());
   }
   catch (err) {
     console.log(err);
