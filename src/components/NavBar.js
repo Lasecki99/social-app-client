@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MyButton from '../util/MyButton';
+import PostScream from './PostScream';
 //Icons
-import AddIcon from '@material-ui/icons/Add';
 import HomeIcon from '@material-ui/icons/Home';
 import Notifications from '@material-ui/icons/Notifications';
 
@@ -20,9 +20,7 @@ const NavBar = ({ authenticated }) => {
       <Toolbar className="nav-container">
         {authenticated ? (
           <>
-            <MyButton tip='Post a Scream!'>
-              <AddIcon />
-            </MyButton>
+            <PostScream />
             <Link to='/'>
               <MyButton tip='Home'>
                 <HomeIcon />

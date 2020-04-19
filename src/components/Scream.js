@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import MyButton from '../util/MyButton';
+import DeleteScream from './DeleteScream';
 //MUI Stuff
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -21,6 +22,7 @@ import { likeScream, unlikeScream } from '../redux/actions/dataActions';
 
 const styles = {
   card: {
+    position: 'relative',
     display: 'flex',
     marginBottom: 20,
 
@@ -34,7 +36,7 @@ const styles = {
   }
 }
 
-const Scream = ({ scream: { body, createdAt, userImage, userHandle, screamId, likeCount, commentCount }, classes, user: { likes, authenticated }, likeScream, unlikeScream }) => {
+const Scream = ({ scream: { body, createdAt, userImage, userHandle, screamId, likeCount, commentCount }, classes, user: { likes, authenticated, credentials: { handle } }, likeScream, unlikeScream }) => {
 
   const likedScream = () => {
     if (likes && likes.find(like => like.screamId === screamId)) return true
@@ -59,6 +61,10 @@ const Scream = ({ scream: { body, createdAt, userImage, userHandle, screamId, li
         )
     )
 
+  const deleteButton = authenticated && userHandle === handle ? (
+    <DeleteScream screamId={screamId} />
+  ) : null
+
   dayjs.extend(relativeTime);
   return (
     <Card className={classes.card}>
@@ -69,6 +75,7 @@ const Scream = ({ scream: { body, createdAt, userImage, userHandle, screamId, li
 
       <CardContent className={classes.content}>
         <Typography variant="h5" component={Link} to={`/users/${userHandle}`} color="primary">{userHandle}</Typography>
+        {deleteButton}
         <Typography variant="body2" color="textSecondary">{dayjs(createdAt).fromNow()}</Typography>
         <Typography variant="body1">{body}</Typography>
         {likeButton}
