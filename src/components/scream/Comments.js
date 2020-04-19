@@ -32,10 +32,10 @@ const Comments = ({ comments, classes }) => {
           <React.Fragment key={createdAt}>
             <Grid item sm={10}>
               <Grid container>
-                <Grid item sm={2}>
+                <Grid item sm={2} style={{ marginLeft: 10 }}>
                   <img src={userImage} alt='comment' className={classes.commentImage} />
                 </Grid>
-                <Grid item sm={9}>
+                <Grid item sm={9} >
                   <div className={classes.commentData}>
                     <Typography variant='h5' component={Link} to={`/users/${userHandle}`} color='primary'>
                       {userHandle}

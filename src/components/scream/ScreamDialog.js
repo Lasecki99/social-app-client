@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import LikeButton from './LikeButton';
 import Comments from './Comments';
+import CommentForm from './CommentForm';
 //MUI Stuff
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -19,7 +20,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 
 // Redux stuff
 import { connect } from 'react-redux';
-import { getScream } from '../../redux/actions/dataActions';
+import { getScream, clearErrors } from '../../redux/actions/dataActions';
 
 const styles = theme => ({
   ...theme.spreadThis,
@@ -47,13 +48,18 @@ const styles = theme => ({
   }
 })
 
-const ScreamDialog = ({ getScream, screamId, classes, scream: { body, createdAt, likeCount, commentCount, userImage, userHandle, comments }, UI: { loading } }) => {
+const ScreamDialog = ({ getScream, clearErrors, screamId, classes, scream: { body, createdAt, likeCount, commentCount, userImage, userHandle, comments }, UI: { loading } }) => {
 
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
     getScream(screamId);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+    clearErrors();
   }
 
   const dialogMarkup = loading ? (
@@ -86,6 +92,7 @@ const ScreamDialog = ({ getScream, screamId, classes, scream: { body, createdAt,
           <span>{commentCount} comments</span>
         </Grid>
         <hr className={classes.invisibleSeparator} />
+        <CommentForm screamId={screamId} />
         <Comments comments={comments} />
       </Grid>
     )
@@ -95,8 +102,8 @@ const ScreamDialog = ({ getScream, screamId, classes, scream: { body, createdAt,
       <MyButton onClick={handleOpen} tip='Expand scream' tipClassName={classes.expandButton}>
         <UnfoldMore color='primary' />
       </MyButton>
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth='sm'>
-        <MyButton tip='Close' onClick={() => setOpen(false)} tipClassName={classes.closeButton}>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth='sm'>
+        <MyButton tip='Close' onClick={handleClose} tipClassName={classes.closeButton}>
           <CloseIcon />
         </MyButton>
         <DialogContent className={classes.dialogContent}>
@@ -108,6 +115,7 @@ const ScreamDialog = ({ getScream, screamId, classes, scream: { body, createdAt,
 }
 
 ScreamDialog.propTypes = {
+  clearErrors: PropTypes.func.isRequired,
   getScream: PropTypes.func.isRequired,
   screamId: PropTypes.string.isRequired,
   userHandle: PropTypes.string.isRequired,
@@ -120,4 +128,4 @@ const mapStateToProps = state => ({
   UI: state.ui
 });
 
-export default connect(mapStateToProps, { getScream })(withStyles(styles)(ScreamDialog));
+export default connect(mapStateToProps, { getScream, clearErrors })(withStyles(styles)(ScreamDialog));
