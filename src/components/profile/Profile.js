@@ -3,7 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { logoutUser, uploadImage } from '../redux/actions/userActions';
+import { logoutUser, uploadImage } from '../../redux/actions/userActions';
 import EditDetails from './EditDetails';
 // MUI Stuff
 import Button from '@material-ui/core/Button';
@@ -15,7 +15,7 @@ import CalendarToday from '@material-ui/icons/CalendarToday';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
-import MyButton from '../util/MyButton';
+import MyButton from '../../util/MyButton';
 
 const styles = theme => ({
   paper: {
@@ -69,7 +69,6 @@ const Profile = ({ classes, uploadImage, logoutUser, user: { credentials: { hand
 
   const handleImageChange = e => {
     const image = e.target.files[0];
-    console.log(image);
     const formData = new FormData();
     formData.append('image', image, image.name);
     uploadImage(formData);

@@ -5,15 +5,14 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import MyButton from '../util/MyButton';
-import PostScream from './PostScream';
+import MyButton from '../../util/MyButton';
+import PostScream from '../scream/PostScream';
 //Icons
 import HomeIcon from '@material-ui/icons/Home';
 import Notifications from '@material-ui/icons/Notifications';
 
 
 const NavBar = ({ authenticated }) => {
-
 
   return (
     <AppBar>

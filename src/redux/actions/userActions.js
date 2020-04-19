@@ -39,7 +39,6 @@ export const getUserData = () => async dispatch => {
   dispatch({ type: LOADING_USER });
   try {
     const res = await axios.get('/user');
-    console.log(res);
     dispatch({ type: SET_USER, payload: res.data });
   }
   catch (err) {
@@ -48,7 +47,6 @@ export const getUserData = () => async dispatch => {
 };
 
 export const uploadImage = formData => async dispatch => {
-  console.log('dispatch');
   dispatch({ type: LOADING_USER });
   try {
     await axios.post('/user/image', formData);

@@ -3,27 +3,26 @@ import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
+import LikeButton from './LikeButton';
+import Comments from './Comments';
 //MUI Stuff
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import MyButton from '../util/MyButton';
+import MyButton from '../../util/MyButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 //Icons
 import CloseIcon from '@material-ui/icons/Close';
 import UnfoldMore from '@material-ui/icons/UnfoldMore';
+import ChatIcon from '@material-ui/icons/Chat';
 
 // Redux stuff
 import { connect } from 'react-redux';
-import { getScream } from '../redux/actions/dataActions';
+import { getScream } from '../../redux/actions/dataActions';
 
 const styles = theme => ({
   ...theme.spreadThis,
-  invisibleSeparator: {
-    border: 'none',
-    margin: 4
-  },
   profileImage: {
     maxWidth: 200,
     height: 200,
@@ -36,10 +35,19 @@ const styles = theme => ({
   closeButton: {
     position: 'absolute',
     left: '90%'
+  },
+  expandButton: {
+    position: 'absolute',
+    left: '90%'
+  },
+  spinnerDiv: {
+    textAlign: 'center',
+    marginTop: 50,
+    marginBottom: 50
   }
 })
 
-const ScreamDialog = ({ getScream, screamId, classes, scream: { body, createdAt, likeCount, commentCount, userImage, userHandle }, UI: { loading } }) => {
+const ScreamDialog = ({ getScream, screamId, classes, scream: { body, createdAt, likeCount, commentCount, userImage, userHandle, comments }, UI: { loading } }) => {
 
   const [open, setOpen] = useState(false);
 
@@ -49,7 +57,10 @@ const ScreamDialog = ({ getScream, screamId, classes, scream: { body, createdAt,
   }
 
   const dialogMarkup = loading ? (
-    <CircularProgress size={190} />
+    <div className={classes.spinnerDiv}>
+      <CircularProgress size={150} thickness={2} />
+    </div>
+
   ) : (
       <Grid container spacing={5}>
         <Grid item sm={5}>
@@ -67,7 +78,15 @@ const ScreamDialog = ({ getScream, screamId, classes, scream: { body, createdAt,
           <Typography variant='body1'>
             {body}
           </Typography>
+          <LikeButton screamId={screamId} />
+          <span>{likeCount} likes</span>
+          <MyButton tip='comments'>
+            <ChatIcon color='primary' />
+          </MyButton>
+          <span>{commentCount} comments</span>
         </Grid>
+        <hr className={classes.invisibleSeparator} />
+        <Comments comments={comments} />
       </Grid>
     )
 
