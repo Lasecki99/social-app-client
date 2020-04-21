@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MyButton from '../../util/MyButton';
 import PostScream from '../scream/PostScream';
+import Notifications from './Notifications';
 //Icons
 import HomeIcon from '@material-ui/icons/Home';
-import Notifications from '@material-ui/icons/Notifications';
 
 
 const NavBar = ({ authenticated }) => {
@@ -25,9 +25,7 @@ const NavBar = ({ authenticated }) => {
                 <HomeIcon />
               </MyButton>
             </Link>
-            <MyButton tip='Notifications'>
-              <Notifications />
-            </MyButton>
+            <Notifications />
           </>
         ) : (
             <>

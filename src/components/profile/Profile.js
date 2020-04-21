@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { logoutUser, uploadImage } from '../../redux/actions/userActions';
 import EditDetails from './EditDetails';
+import ProfileSkeleton from '../../util/ProfileSkeleton';
 // MUI Stuff
 import Button from '@material-ui/core/Button';
 import MuiLink from '@material-ui/core/Link';
@@ -18,51 +19,7 @@ import KeyboardReturn from '@material-ui/icons/KeyboardReturn';
 import MyButton from '../../util/MyButton';
 
 const styles = theme => ({
-  paper: {
-    padding: 20
-  },
-  profile: {
-    '& .image-wrapper': {
-      textAlign: 'center',
-      position: 'relative',
-      '& button': {
-        position: 'absolute',
-        top: '80%',
-        left: '70%'
-      }
-    },
-    '& .profile-image': {
-      width: 200,
-      height: 200,
-      objectFit: 'cover',
-      maxWidth: '100%',
-      borderRadius: '50%'
-    },
-    '& .profile-details': {
-      textAlign: 'center',
-      '& span, svg': {
-        verticalAlign: 'middle'
-      },
-      '& a': {
-        color: '#00bcd4'
-      }
-    },
-    '& hr': {
-      border: 'none',
-      margin: '0 0 10px 0'
-    },
-    '& svg.button': {
-      '&:hover': {
-        cursor: 'pointer'
-      }
-    }
-  },
-  buttons: {
-    textAlign: 'center',
-    '& a': {
-      margin: '20px 10px'
-    }
-  }
+  ...theme.spreadThis
 });
 
 const Profile = ({ classes, uploadImage, logoutUser, user: { credentials: { handle, createdAt, imageUrl, bio, website, location }, loading, authenticated } }) => {
@@ -137,7 +94,7 @@ const Profile = ({ classes, uploadImage, logoutUser, user: { credentials: { hand
         </Button>
         </div>
       </Paper>
-    )) : (<p>loading...</p>)
+    )) : (<ProfileSkeleton />)
 
   return profileMarkup;
 }

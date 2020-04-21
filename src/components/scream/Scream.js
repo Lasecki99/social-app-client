@@ -34,7 +34,7 @@ const styles = {
   }
 }
 
-const Scream = ({ scream: { body, createdAt, userImage, userHandle, screamId, likeCount, commentCount }, classes, user: { authenticated, credentials: { handle } } }) => {
+const Scream = ({ scream: { body, createdAt, userImage, userHandle, screamId, likeCount, commentCount }, classes, user: { authenticated, credentials: { handle } }, openDialog }) => {
 
   const deleteButton = authenticated && userHandle === handle ? (
     <DeleteScream screamId={screamId} />
@@ -59,7 +59,7 @@ const Scream = ({ scream: { body, createdAt, userImage, userHandle, screamId, li
           <ChatIcon color='primary' />
         </MyButton>
         <span>{commentCount} comments</span>
-        <ScreamDialog screamId={screamId} userHandle={userHandle} />
+        <ScreamDialog screamId={screamId} userHandle={userHandle} openDialog={openDialog} />
       </CardContent>
 
     </Card>
@@ -69,7 +69,8 @@ const Scream = ({ scream: { body, createdAt, userImage, userHandle, screamId, li
 Scream.propTypes = {
   user: PropTypes.object.isRequired,
   scream: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  openDialog: PropTypes.bool
 }
 
 const mapStateToProps = state => ({

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import dayjs from 'dayjs';
@@ -48,19 +48,32 @@ const styles = theme => ({
   }
 })
 
-const ScreamDialog = ({ getScream, clearErrors, screamId, classes, scream: { body, createdAt, likeCount, commentCount, userImage, userHandle, comments }, UI: { loading } }) => {
+const ScreamDialog = ({ getScream, clearErrors, screamId, classes, scream: { body, createdAt, likeCount, commentCount, userImage, userHandle, comments }, UI: { loading }, openDialog }) => {
 
   const [open, setOpen] = useState(false);
+  const [oldPath, setOldPath] = useState('');
 
   const handleOpen = () => {
+    let oldPathTmp = window.location.pathname;
+    const newPathTmp = `/users/${userHandle}/scream/${screamId}`;
+
+    if (oldPathTmp === newPathTmp) oldPathTmp = `/users/${userHandle}`;
+    window.history.pushState(null, null, newPathTmp);
+
+    setOldPath(oldPathTmp);
     setOpen(true);
     getScream(screamId);
   }
 
   const handleClose = () => {
+    window.history.pushState(null, null, oldPath);
     setOpen(false);
     clearErrors();
   }
+
+  useEffect(() => {
+    if (openDialog) handleOpen();
+  }, [openDialog]);
 
   const dialogMarkup = loading ? (
     <div className={classes.spinnerDiv}>
